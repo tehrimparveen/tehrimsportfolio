@@ -72,7 +72,7 @@ export const Contact = () => {
               
               <div className="space-y-6">
                 <a 
-                  href="mailto:tehrimparveen25@gmail.com" 
+                  href="mailto:oceanblueyes658@gmail.com" 
                   className="flex items-center gap-4 text-foreground hover:text-primary transition-colors group"
                 >
                   <div className="p-3 bg-primary/10 rounded-lg group-hover:bg-primary/20 transition-colors">
@@ -80,7 +80,7 @@ export const Contact = () => {
                   </div>
                   <div>
                     <p className="text-sm text-muted-foreground">Email</p>
-                    <p className="font-medium">tehrimparveen25@gmail.com</p>
+                    <p className="font-medium">oceanblueyes658@gmail.com</p>
                   </div>
                 </a>
                 

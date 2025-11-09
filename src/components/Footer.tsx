@@ -10,10 +10,10 @@ export const Footer = () => {
           </p>
           <div className="flex justify-center gap-6 text-sm">
             <a 
-              href="mailto:tehrimparveen25@gmail.com" 
+              href="mailto:oceanblueyes658@gmail.com" 
               className="text-muted-foreground hover:text-primary transition-colors"
             >
-              tehrimparveen25@gmail.com
+              oceanblueyes658@gmail.com
             </a>
             <span className="text-muted-foreground">|</span>
             <a 
