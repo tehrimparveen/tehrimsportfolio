@@ -11,8 +11,13 @@ export const About = () => {
               elegant and functional.
             </p>
             <p className="text-lg text-foreground leading-relaxed mb-4">
+              Currently, I'm a student at St. John's Diocesan Girls H.S School, studying in class 12th. 
+              Alongside my academics, I have developed a strong passion for technology and software development, 
+              creating platforms that connect people and solve real-world challenges.
+            </p>
+            <p className="text-lg text-foreground leading-relaxed mb-4">
               My experience spans from frontend development with modern frameworks to backend systems and database management. 
-              I specialize in creating platforms that connect people and solve real-world challenges through technology.
+              I specialize in building user-friendly applications that make a meaningful impact.
             </p>
             <p className="text-lg text-foreground leading-relaxed">
               Whether it's developing REST APIs, crafting responsive user interfaces, or optimizing database queries, 
