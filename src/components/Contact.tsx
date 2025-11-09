@@ -1,56 +1,68 @@
 import { useState } from "react";
+import { Mail, Phone } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import { toast } from "sonner";
-import { Mail, Phone } from "lucide-react";
+import { toast } from "@/hooks/use-toast";
 import { z } from "zod";
+import { supabase } from "@/integrations/supabase/client";
 
 const contactSchema = z.object({
-  name: z.string().trim().min(1, "Name is required").max(100, "Name must be less than 100 characters"),
-  email: z.string().trim().email("Invalid email address").max(255, "Email must be less than 255 characters"),
-  subject: z.string().trim().min(1, "Subject is required").max(200, "Subject must be less than 200 characters"),
-  message: z.string().trim().min(10, "Message must be at least 10 characters").max(1000, "Message must be less than 1000 characters"),
+  name: z.string().min(2, "Name must be at least 2 characters").max(100),
+  email: z.string().email("Invalid email address").max(255),
+  subject: z.string().min(5, "Subject must be at least 5 characters").max(200),
+  message: z.string().min(10, "Message must be at least 10 characters").max(2000),
 });
 
 export const Contact = () => {
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     subject: "",
     message: "",
   });
-  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+    setIsSubmitting(true);
+
     try {
-      // Validate form data
-      contactSchema.parse(formData);
+      const validatedData = contactSchema.parse(formData);
       
-      setIsSubmitting(true);
+      console.log("Sending contact email...");
+      const { data, error } = await supabase.functions.invoke("send-contact-email", {
+        body: validatedData,
+      });
+
+      if (error) {
+        console.error("Error sending email:", error);
+        throw error;
+      }
+
+      console.log("Email sent successfully:", data);
       
-      // TODO: Replace with actual backend endpoint when Lovable Cloud is enabled
-      // const response = await fetch('/api/contact', {
-      //   method: 'POST',
-      //   headers: { 'Content-Type': 'application/json' },
-      //   body: JSON.stringify(formData),
-      // });
-      
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      toast.success("Message sent successfully! I'll get back to you soon.");
+      toast({
+        title: "Message sent!",
+        description: "Thank you for reaching out. I'll get back to you soon.",
+      });
+
       setFormData({ name: "", email: "", subject: "", message: "" });
     } catch (error) {
+      console.error("Form submission error:", error);
       if (error instanceof z.ZodError) {
-        error.errors.forEach((err) => {
-          toast.error(err.message);
+        toast({
+          title: "Validation Error",
+          description: error.errors[0].message,
+          variant: "destructive",
         });
       } else {
-        toast.error("Failed to send message. Please try again or contact me directly via email.");
+        toast({
+          title: "Error",
+          description: "Failed to send message. Please try again.",
+          variant: "destructive",
+        });
       }
     } finally {
       setIsSubmitting(false);
@@ -58,122 +70,120 @@ export const Contact = () => {
   };
 
   return (
-    <section id="contact" className="py-20">
-      <div className="container mx-auto px-4">
-        <h2 className="text-4xl font-bold text-center text-foreground mb-4">Get In Touch</h2>
-        <p className="text-center text-muted-foreground mb-12 max-w-2xl mx-auto">
-          Have a project in mind or want to collaborate? Feel free to reach out!
-        </p>
-        
-        <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
-          <div>
-            <div className="bg-gradient-card rounded-2xl p-8 shadow-card h-full">
-              <h3 className="text-2xl font-bold text-foreground mb-6">Contact Information</h3>
-              
-              <div className="space-y-6">
-                <a 
-                  href="mailto:oceanblueyes658@gmail.com" 
-                  className="flex items-center gap-4 text-foreground hover:text-primary transition-colors group"
-                >
-                  <div className="p-3 bg-primary/10 rounded-lg group-hover:bg-primary/20 transition-colors">
-                    <Mail className="h-6 w-6 text-primary" />
-                  </div>
-                  <div>
-                    <p className="text-sm text-muted-foreground">Email</p>
-                    <p className="font-medium">oceanblueyes658@gmail.com</p>
-                  </div>
-                </a>
-                
-                <a 
-                  href="tel:+919831973007" 
-                  className="flex items-center gap-4 text-foreground hover:text-primary transition-colors group"
-                >
-                  <div className="p-3 bg-primary/10 rounded-lg group-hover:bg-primary/20 transition-colors">
-                    <Phone className="h-6 w-6 text-primary" />
-                  </div>
-                  <div>
-                    <p className="text-sm text-muted-foreground">Phone</p>
-                    <p className="font-medium">+91 98319 73007</p>
-                  </div>
-                </a>
+    <section id="contact" className="py-24 md:py-32">
+      <div className="container mx-auto px-6 md:px-8">
+        <div className="text-center mb-16 space-y-4">
+          <h2 className="text-4xl md:text-5xl font-bold text-foreground">Get In Touch</h2>
+          <p className="text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+            Have a project in mind or want to collaborate? Feel free to reach out!
+          </p>
+        </div>
+
+        <div className="grid md:grid-cols-2 gap-12 max-w-6xl mx-auto">
+          <div className="space-y-8">
+            <div className="bg-gradient-card rounded-3xl p-8 shadow-soft border border-border/50 hover:shadow-hover transition-all duration-500 group">
+              <div className="flex items-start gap-6">
+                <div className="p-4 bg-gradient-accent rounded-2xl shadow-soft group-hover:scale-110 transition-transform duration-300">
+                  <Mail className="h-7 w-7 text-white" />
+                </div>
+                <div>
+                  <h3 className="text-xl font-bold text-foreground mb-3">Email</h3>
+                  <a 
+                    href="mailto:oceanblueyes658@gmail.com" 
+                    className="text-lg text-muted-foreground hover:text-primary transition-colors font-medium"
+                  >
+                    oceanblueyes658@gmail.com
+                  </a>
+                  <p className="text-base text-muted-foreground mt-3 leading-relaxed">
+                    Best for project inquiries and collaborations
+                  </p>
+                </div>
               </div>
-              
-              <div className="mt-8 p-4 bg-muted/50 rounded-lg">
-                <p className="text-sm text-muted-foreground">
-                  Available for freelance projects and full-time opportunities. 
-                  Response time is typically within 24 hours.
-                </p>
+            </div>
+            
+            <div className="bg-gradient-card rounded-3xl p-8 shadow-soft border border-border/50 hover:shadow-hover transition-all duration-500 group">
+              <div className="flex items-start gap-6">
+                <div className="p-4 bg-gradient-accent rounded-2xl shadow-soft group-hover:scale-110 transition-transform duration-300">
+                  <Phone className="h-7 w-7 text-white" />
+                </div>
+                <div>
+                  <h3 className="text-xl font-bold text-foreground mb-3">Phone</h3>
+                  <a 
+                    href="tel:+917668071127" 
+                    className="text-lg text-muted-foreground hover:text-primary transition-colors font-medium"
+                  >
+                    +91 7668071127
+                  </a>
+                  <p className="text-base text-muted-foreground mt-3 leading-relaxed">
+                    Available for urgent matters
+                  </p>
+                </div>
               </div>
             </div>
           </div>
-          
-          <div className="bg-gradient-card rounded-2xl p-8 shadow-card">
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div>
-                <Label htmlFor="name">Name *</Label>
-                <Input
-                  id="name"
-                  type="text"
-                  value={formData.name}
-                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  required
-                  maxLength={100}
-                  className="mt-1"
-                  aria-required="true"
-                />
-              </div>
-              
-              <div>
-                <Label htmlFor="email">Email *</Label>
-                <Input
-                  id="email"
-                  type="email"
-                  value={formData.email}
-                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                  required
-                  maxLength={255}
-                  className="mt-1"
-                  aria-required="true"
-                />
-              </div>
-              
-              <div>
-                <Label htmlFor="subject">Subject *</Label>
-                <Input
-                  id="subject"
-                  type="text"
-                  value={formData.subject}
-                  onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
-                  required
-                  maxLength={200}
-                  className="mt-1"
-                  aria-required="true"
-                />
-              </div>
-              
-              <div>
-                <Label htmlFor="message">Message *</Label>
-                <Textarea
-                  id="message"
-                  value={formData.message}
-                  onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                  required
-                  minLength={10}
-                  maxLength={1000}
-                  rows={5}
-                  className="mt-1"
-                  aria-required="true"
-                />
-                <p className="text-xs text-muted-foreground mt-1">
-                  {formData.message.length}/1000 characters
-                </p>
-              </div>
-              
-              <Button type="submit" className="w-full" disabled={isSubmitting}>
-                {isSubmitting ? "Sending..." : "Send Message"}
-              </Button>
-            </form>
-          </div>
+
+          <form onSubmit={handleSubmit} className="bg-gradient-card rounded-3xl p-8 md:p-10 shadow-soft border border-border/50 space-y-8">
+            <div className="space-y-2">
+              <Label htmlFor="name" className="text-base font-semibold">Name</Label>
+              <Input
+                id="name"
+                type="text"
+                placeholder="Your Name"
+                value={formData.name}
+                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                required
+                className="text-base"
+              />
+            </div>
+            
+            <div className="space-y-2">
+              <Label htmlFor="email" className="text-base font-semibold">Email</Label>
+              <Input
+                id="email"
+                type="email"
+                placeholder="your.email@example.com"
+                value={formData.email}
+                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                required
+                className="text-base"
+              />
+            </div>
+            
+            <div className="space-y-2">
+              <Label htmlFor="subject" className="text-base font-semibold">Subject</Label>
+              <Input
+                id="subject"
+                type="text"
+                placeholder="Project Inquiry"
+                value={formData.subject}
+                onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
+                required
+                className="text-base"
+              />
+            </div>
+            
+            <div className="space-y-2">
+              <Label htmlFor="message" className="text-base font-semibold">Message</Label>
+              <Textarea
+                id="message"
+                placeholder="Tell me about your project..."
+                value={formData.message}
+                onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                rows={6}
+                required
+                className="resize-none text-base"
+              />
+            </div>
+            
+            <Button 
+              type="submit" 
+              size="lg" 
+              className="w-full text-base hover:shadow-hover transition-all duration-300 hover:scale-[1.02]" 
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? "Sending..." : "Send Message"}
+            </Button>
+          </form>
         </div>
       </div>
     </section>
