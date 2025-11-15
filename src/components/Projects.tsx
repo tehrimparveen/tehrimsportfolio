@@ -2,6 +2,7 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ExternalLink, Github } from "lucide-react";
 import petConnectImage from "@/assets/pet-connect.jpg";
+import tutorConnectImage from "@/assets/tutor-connect.jpg";
 
 const projects = [
   {
@@ -16,7 +17,7 @@ const projects = [
     title: "Tutor-Connect",
     description: "Matchmaking platform for tutors and students. Includes detailed tutor profiles, subject filtering, booking request forms, and rating system.",
     tech: ["HTML", "CSS", "JavaScript", "Python", "SQL"],
-    image: "/placeholder.svg", // Replace with actual screenshot
+    image: tutorConnectImage,
     demo: "#",
     source: "#",
   },
