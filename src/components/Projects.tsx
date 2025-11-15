@@ -1,13 +1,14 @@
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ExternalLink, Github } from "lucide-react";
+import petConnectImage from "@/assets/pet-connect.jpg";
 
 const projects = [
   {
     title: "Pet-Connect",
     description: "A comprehensive platform connecting pet owners with trusted caretakers. Features include pet listings, advanced search filters, and direct contact with caretakers.",
     tech: ["Python", "Java", "REST API", "SQL", "Responsive Design"],
-    image: "/placeholder.svg", // Replace with actual screenshot
+    image: petConnectImage,
     demo: "#",
     source: "#",
   },
