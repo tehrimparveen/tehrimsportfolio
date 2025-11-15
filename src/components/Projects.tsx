@@ -3,6 +3,8 @@ import { Button } from "@/components/ui/button";
 import { ExternalLink, Github } from "lucide-react";
 import petConnectImage from "@/assets/pet-connect.jpg";
 import tutorConnectImage from "@/assets/tutor-connect.jpg";
+import calculatorImage from "@/assets/calculator.jpg";
+import comingSoonImage from "@/assets/coming-soon.jpg";
 
 const projects = [
   {
@@ -18,6 +20,22 @@ const projects = [
     description: "Matchmaking platform for tutors and students. Includes detailed tutor profiles, subject filtering, booking request forms, and rating system.",
     tech: ["HTML", "CSS", "JavaScript", "Python", "SQL"],
     image: tutorConnectImage,
+    demo: "#",
+    source: "#",
+  },
+  {
+    title: "Simple Calculator",
+    description: "A clean and functional calculator application with basic arithmetic operations. Features an intuitive interface with responsive design for seamless calculations.",
+    tech: ["HTML", "CSS", "JavaScript", "Responsive Design"],
+    image: calculatorImage,
+    demo: "#",
+    source: "#",
+  },
+  {
+    title: "Coming Soon",
+    description: "An exciting new project currently in development. Stay tuned for updates on this upcoming addition to my portfolio.",
+    tech: ["TBA"],
+    image: comingSoonImage,
     demo: "#",
     source: "#",
   },
