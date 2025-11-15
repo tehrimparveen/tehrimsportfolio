@@ -4,7 +4,7 @@ import { ExternalLink, Github } from "lucide-react";
 import petConnectImage from "@/assets/pet-connect.jpg";
 import tutorConnectImage from "@/assets/tutor-connect.jpg";
 import calculatorImage from "@/assets/calculator.jpg";
-import comingSoonImage from "@/assets/coming-soon.jpg";
+import stayTunedImage from "@/assets/stay-tuned.jpg";
 
 const projects = [
   {
@@ -35,7 +35,7 @@ const projects = [
     title: "Coming Soon",
     description: "An exciting new project currently in development. Stay tuned for updates on this upcoming addition to my portfolio.",
     tech: ["TBA"],
-    image: comingSoonImage,
+    image: stayTunedImage,
     demo: "#",
     source: "#",
   },
