@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { ArrowDown } from "lucide-react";
-import heroBg from "@/assets/hero-bg.jpg";
+import heroBg from "@/assets/cyber-bg.jpg";
 
 export const Hero = () => {
   const scrollToContact = () => {
@@ -11,7 +11,7 @@ export const Hero = () => {
   return (
     <section className="min-h-screen flex items-center justify-center relative overflow-hidden pt-20">
       <div 
-        className="absolute inset-0 z-0 opacity-10 dark:opacity-5"
+        className="absolute inset-0 z-0 opacity-20 dark:opacity-30"
         style={{
           backgroundImage: `url(${heroBg})`,
           backgroundSize: "cover",
