@@ -109,10 +109,10 @@ export const Contact = () => {
                 <div>
                   <h3 className="text-xl font-bold text-foreground mb-3">Phone</h3>
                   <a 
-                    href="tel:+917668071127" 
+                    href="tel:+919831973007" 
                     className="text-lg text-muted-foreground hover:text-primary transition-colors font-medium"
                   >
-                    +91 7668071127
+                    +91 9831973007
                   </a>
                   <p className="text-base text-muted-foreground mt-3 leading-relaxed">
                     Available for urgent matters
